@@ -1,0 +1,31 @@
+﻿@model IEnumerable<MobileStore.Models.Phone>
+@{
+    ViewData["Title"] = "Каталог товаров";
+}
+<h2 id="UserName"></h2>
+<h3>Смартфоны</h3>
+<table class="table-condensed">
+    <tr>
+        <td>Модель</td>
+        <td>Производитель</td>
+        <td>Цена</td>
+        <td></td>
+    </tr>
+    @foreach (var phone in Model)
+    {
+        if (phone.Balance > 0)
+        {
+            <tr>
+                <td>@phone.Name</td>
+                <td>@phone.Company</td>
+                <td>@phone.Price</td>
+                <td><a href="~/Home/Buy/@phone.Id">Купить</a></td>
+            </tr>
+        }
+    }
+</table>
+<form asp-controller="Home" asp-action="Exit">
+    <div>
+        <input type="submit" value="Выйти" />
+    </div>
+</form>
