@@ -9,7 +9,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using MobileStore.Models;
+using MobileStore.Services;
 using MobileStore.ViewModels;
 
 namespace MobileStore.Controllers
@@ -62,7 +64,8 @@ namespace MobileStore.Controllers
                     User newUser = new User(model.NameAndSurname, model.Email, model.Password);
                     db.Users.Add(newUser);
                     await db.SaveChangesAsync();
-
+                    EmailService emailService = new EmailService();
+                    await emailService.SendEmailAsync(newUser.Email, "Регистрация", HttpContext.Request.Scheme+HttpContext.Request.Host+HttpContext.Request.Path);
                     await Authenticate(model.Email); // аутентификация
 
                     return RedirectToAction("Index", "Home");
@@ -91,5 +94,6 @@ namespace MobileStore.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "Account");
         }
+
     }
 }

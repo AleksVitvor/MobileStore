@@ -37,15 +37,14 @@ namespace MobileStore.Controllers
             db.SaveChanges();
             var orderAdd = db.Orders.Where(u => u==order).FirstOrDefault();
             var user = db.Users.Where(u => u.Email == HttpContext.User.Identity.Name).FirstOrDefault();
-            user.order = orderAdd;
+            user.Orders.Add(orderAdd);
             db.SaveChanges();
             return new RedirectResult("/Home/Index");
         }
         [HttpPost]
         public RedirectResult Exit()
         {
-            HttpContext.SignOutAsync();
-            return new RedirectResult("/Account/Login");
+            return new RedirectResult("/Account/Logout");
         }
     }
 }

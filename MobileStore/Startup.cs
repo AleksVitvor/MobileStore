@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MobileStore.Models;
+using MobileStore.Services;
 
 namespace MobileStore
 {
@@ -51,7 +52,6 @@ namespace MobileStore
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
 
             app.UseAuthentication();    // аутентификация
