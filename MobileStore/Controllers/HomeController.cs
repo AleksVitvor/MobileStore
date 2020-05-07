@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -10,6 +11,7 @@ using MobileStore.Models;
 
 namespace MobileStore.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         MobileContext db;
@@ -17,12 +19,10 @@ namespace MobileStore.Controllers
         {
             db = context;
         }
-        [Authorize]
         public IActionResult Index()
         {
             return View(db.Phones.ToList());
         }
-        [Authorize]
         [HttpGet]
         public IActionResult Buy(int? id)
         {
@@ -30,20 +30,21 @@ namespace MobileStore.Controllers
             ViewBag.PhoneId = id;
             return View();
         }
-        [Authorize]
         [HttpPost]
         public RedirectResult Buy(Order order)
         {
             db.Orders.Add(order);
-            var phone = db.Phones.Where(u=>u.Id==2).FirstOrDefault();
-            phone.Balance++;
             db.SaveChanges();
-            return new RedirectResult("/Home/");
+            var orderAdd = db.Orders.Where(u => u==order).FirstOrDefault();
+            var user = db.Users.Where(u => u.Email == HttpContext.User.Identity.Name).FirstOrDefault();
+            user.order = orderAdd;
+            db.SaveChanges();
+            return new RedirectResult("/Home/Index");
         }
-        [Authorize]
         [HttpPost]
         public RedirectResult Exit()
         {
+            HttpContext.SignOutAsync();
             return new RedirectResult("/Account/Login");
         }
     }
