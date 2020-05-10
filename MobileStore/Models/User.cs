@@ -12,6 +12,7 @@ namespace MobileStore.Models
         public int Id { get; set; }
         public string NameAndSurname { get; set; }
         public string Email { get; set; }
+        public bool IsVerified { get; set; }
         private string _password;
         public string Password
         {
