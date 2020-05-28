@@ -57,6 +57,7 @@ namespace MobileStore
             app.UseAuthentication();    // аутентификация
             app.UseAuthorization();     // авторизация
 
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

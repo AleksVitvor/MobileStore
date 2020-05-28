@@ -12,17 +12,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MobileStore.Models;
+using MobileStore.Patterns;
 using MobileStore.Services;
 using MobileStore.ViewModels;
+using RestSharp;
 
 namespace MobileStore.Controllers
 {
     public class AccountController : Controller
     {
+        UnitOfWork unitOfWork;
         private MobileContext db;
         public AccountController(MobileContext context)
         {
             db = context;
+            unitOfWork = new UnitOfWork(db);
         }
         [HttpGet]
         public IActionResult Login()

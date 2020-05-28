@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Http;
 using MimeKit.Text;
+using RestSharp;
+using System.Net;
+using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace MobileStore.Services
 {
@@ -24,6 +27,7 @@ namespace MobileStore.Services
             using (var client = new SmtpClient())
             {
                 await client.ConnectAsync("smtp.gmail.com", 587, false);
+                
                 await client.AuthenticateAsync("healthcaresupbelstu@gmail.com", "**********");
                 await client.SendAsync(emailMessage);
 
